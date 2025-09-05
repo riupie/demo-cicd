@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fe-nextjs
+    part-of: fe-nextjs
+  name: fe-nextjs
+spec:
+  selector:
+    matchLabels:
+      app: fe-nextjs
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: fe-nextjs
+        part-of: fe-nextjs
+    spec:
+      containers:
+        - name: fe-nextjs
+          image: ghcr.io/riupie/REPO_NAME/fe-nextjs:SHORT_SHA
+          ports:
+            - containerPort: 80
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - 'ALL'
+            runAsNonRoot: true
+            runAsUser: 100001
+            seccompProfile:
+              type: RuntimeDefault
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200M
+            requests:
+              cpu: 50m
+              memory: 100M
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: fe-nextjs
+    part-of: fe-nextjs
+  name: fe-nextjs
+spec:
+  selector:
+    app: fe-nextjs
+  ports:
+    - name: fe-nextjs-http
+      port: 80
+      protocol: TCP
+      targetPort: 80
