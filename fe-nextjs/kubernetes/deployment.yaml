@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: fe-nextjs
-          image: ghcr.io/riupie/REPO_NAME/fe-nextjs:SHORT_SHA
+          image: ghcr.io/riupie/demo-cicd/fe-nextjs:SHORT_SHA
           ports:
             - containerPort: 80
           securityContext:

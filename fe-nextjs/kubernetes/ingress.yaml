@@ -13,7 +13,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: fe-nextjs.example.com   # change to your real domain
+    - host: '*'
       http:
         paths:
           - path: /
