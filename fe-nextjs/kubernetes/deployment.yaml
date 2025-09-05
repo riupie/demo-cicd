@@ -26,15 +26,6 @@ spec:
           image: ghcr.io/riupie/demo-cicd/fe-nextjs:SHORT_SHA
           ports:
             - containerPort: 80
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - 'ALL'
-            runAsNonRoot: true
-            runAsUser: 100001
-            seccompProfile:
-              type: RuntimeDefault
           readinessProbe:
             httpGet:
               path: /
